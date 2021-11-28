@@ -1,7 +1,5 @@
 package com.Prueba.ApiRest.models;
 
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -38,7 +36,7 @@ public class Rol {
 	public void setTipo(Roles tipo) {
 		this.tipo = tipo;
 	}
-	
+
 	public Rol() {
 		super();
 	}

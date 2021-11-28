@@ -54,14 +54,13 @@ public class UsuarioService implements IUsuarioService {
 	}
 
 	@Override
-	public void delete(Usuario usuario) throws Exception {
+	public void delete(Usuario usuario) throws Exception{
 		try {
-			
+			usuarioRepository.delete(usuario);
 		}catch (Exception e) {
 			// TODO: handle exception
 			throw new Exception("Ocurrio un error --> "+e.getMessage());
 		}
-		
 	}
 	
 	/**

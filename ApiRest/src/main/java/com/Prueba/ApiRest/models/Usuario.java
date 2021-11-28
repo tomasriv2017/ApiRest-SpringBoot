@@ -104,10 +104,16 @@ public class Usuario {
 		this.fechaActualizacion = fechaActualizacion;
 	}
 	
+	public Set<Rol> getRoles() {
+		return roles;
+	}
+	public void setRoles(Set<Rol> roles) {
+		this.roles = roles;
+	}
 	public Usuario() {
 		super();
 	}
-	public Usuario(String dni, String apellido, String nombre, String email, String username, String password) {
+	public Usuario(String dni, String apellido, String nombre, String email, String username, String password, Set<Rol>roles) {
 		super();
 		this.dni = dni;
 		this.apellido = apellido;
@@ -115,6 +121,7 @@ public class Usuario {
 		this.email = email;
 		this.username = username;
 		this.password = password;
+		this.setRoles(roles);
 	}
 	
 	
