@@ -1,0 +1,22 @@
+spring:
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver   #Indica el driver/lib para conectar java a mysql
+        url: jdbc:mysql://localhost:3306/apirest_db?serverTimezone=UTC 
+        username: root
+        password: 123456789   
+    sql:
+     init:
+      mode: always
+
+    jpa:
+        show-sql: true #[Opcional]Imprime en tu consola las instrucciones hechas en tu base de datos.
+        hibernate:
+           ddl-auto: create
+        properties:
+          dialect: org.hibernate.dialect.MySQL5Dialect
+               
+server: 
+    port: 9090  #[Opcional] Indica en que puerto se abrira el Servidor
+             
+
+ 
