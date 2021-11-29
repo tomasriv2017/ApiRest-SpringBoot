@@ -14,6 +14,7 @@ public class UsuarioPrincipal implements UserDetails{
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	private int id;
 	private String email;
 	private String username;
 	private String password;
@@ -58,20 +59,24 @@ public class UsuarioPrincipal implements UserDetails{
 	public String getEmail() {
 		return email;
 	}
-
+	public int getId() {
+		return id;
+	}
+	
 	public static UsuarioPrincipal build(Usuario usuario) {
 		List<GrantedAuthority> authorities = usuario.getRoles().stream().map(rol->
 		new SimpleGrantedAuthority(rol.getTipo().name())).collect(Collectors.toList());
 		
-		return new UsuarioPrincipal(usuario.getEmail(), usuario.getUsername(), usuario.getPassword(), authorities);
+		return new UsuarioPrincipal(usuario.getId(),usuario.getEmail(), usuario.getUsername(), usuario.getPassword(), authorities);
 	}
 	
 	public UsuarioPrincipal() {
 		super();
 	}
-	public UsuarioPrincipal(String email, String username, String password,
+	public UsuarioPrincipal(int id, String email, String username, String password,
 			Collection<? extends GrantedAuthority> authorities) {
 		super();
+		this.id = id;
 		this.email = email;
 		this.username = username;
 		this.password = password;
