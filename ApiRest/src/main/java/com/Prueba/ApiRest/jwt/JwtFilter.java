@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class JwtFilter extends OncePerRequestFilter {
 		// TODO Auto-generated method stub
 		try {
 			String token = getToken(req); //obtengo el token
-			if(!token.isEmpty() && jwtProvider.validateToken(token)){ //valido el token
+			if(token != null && jwtProvider.validateToken(token)){ //valido el token
 				String username = jwtProvider.getUsernameFromToken(token); //obtengo el username mediante el token
 				UserDetails userDetails = userDetailsServiceImp.loadUserByUsername(username); //obtengo el usuario mediante el username
 				UsernamePasswordAuthenticationToken auth = 
@@ -41,7 +42,7 @@ public class JwtFilter extends OncePerRequestFilter {
 			}
 		}catch (Exception e) {
 			// TODO: handle exception
-			logger.error("Error en el metodo doFilter");
+			logger.error("Error en el metodo doFilter --> "+e);
 		}
 		filterChain.doFilter(req, res); //repito el proceso por cada endpoint que lo requiera
 	}
@@ -49,8 +50,8 @@ public class JwtFilter extends OncePerRequestFilter {
 	private String getToken(HttpServletRequest req) {
 		String header = req.getHeader("Authorization"); //obtengo el token que se encuentra en la cabecera 
 		System.out.println("Header --> "+header);
-		if(!header.isEmpty() && header.startsWith("Bearer")) { //si la cabecera no esta vacia y empieza con Bearer ("un estandar de JWT para los tokens")
-			header =  header.split(" ")[1]; //retiro "Bearer" y me quedo como todo lo demas
+		if(header != null && header.startsWith("Bearer")) { //si la cabecera no esta vacia y empieza con Bearer ("un estandar de JWT para los tokens")
+			header =  header.split(" ")[1]; //retiro "Bearer" y me quedo con todo lo demas
 			System.out.println("Header modificado --> "+header);
 		}
 		return header;

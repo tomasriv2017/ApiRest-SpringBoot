@@ -1,6 +1,5 @@
 package com.Prueba.ApiRest.models;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -113,7 +112,7 @@ public class Usuario {
 	public Usuario() {
 		super();
 	}
-	public Usuario(String dni, String apellido, String nombre, String email, String username, String password, Set<Rol>roles) {
+	public Usuario(String dni, String apellido, String nombre, String email, String username, String password) {
 		super();
 		this.dni = dni;
 		this.apellido = apellido;
@@ -121,7 +120,6 @@ public class Usuario {
 		this.email = email;
 		this.username = username;
 		this.password = password;
-		this.setRoles(roles);
 	}
 	
 	

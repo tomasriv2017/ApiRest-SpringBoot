@@ -29,6 +29,7 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioService usuarioService;
 	
+	/*
 	@PostMapping("/nuevo")
 	public ResponseEntity<?> nuevoUsuario(@Validated @RequestBody Usuario usuario){
 		if(usuarioService.findByUsername(usuario.getUsername()).isEmpty() && 
@@ -38,7 +39,7 @@ public class UsuarioController {
 		}else {
 			return new ResponseEntity<Mensaje>(new Mensaje("El email o el username ya existen"),HttpStatus.BAD_REQUEST);
 		}
-	}
+	}*/
 	
 	@PutMapping("/actualizar/{id}")
 	public ResponseEntity<?> actualizarUsuario(@RequestBody Usuario usuarioModificado, 
