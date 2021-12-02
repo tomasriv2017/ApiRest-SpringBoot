@@ -1,22 +1,13 @@
 package com.Prueba.ApiRest.models;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.lang.NonNull;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "usuario")
@@ -38,7 +29,7 @@ public class Usuario {
 	@NonNull
 	private String password;
 	@NonNull
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "usuarios_roles", joinColumns = @JoinColumn(name="idUsuario"), 
 	inverseJoinColumns = @JoinColumn(name="idRol"))
 	private Set<Rol> roles = new HashSet<>();
@@ -113,7 +104,7 @@ public class Usuario {
 	public Usuario() {
 		super();
 	}
-	public Usuario(String dni, String apellido, String nombre, String email, String username, String password, Set<Rol>roles) {
+	public Usuario(String dni, String apellido, String nombre, String email, String username, String password) {
 		super();
 		this.dni = dni;
 		this.apellido = apellido;
@@ -121,7 +112,6 @@ public class Usuario {
 		this.email = email;
 		this.username = username;
 		this.password = password;
-		this.setRoles(roles);
 	}
 	
 	
