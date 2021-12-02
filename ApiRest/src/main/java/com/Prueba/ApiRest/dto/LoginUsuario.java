@@ -1,11 +1,11 @@
 package com.Prueba.ApiRest.dto;
 
-import org.springframework.lang.NonNull;
+import javax.validation.constraints.NotBlank;
 
 public class LoginUsuario {
-	@NonNull
+	@NotBlank
 	private String username;
-	@NonNull
+	@NotBlank
 	private String password;
 	
 	public String getUsername() {

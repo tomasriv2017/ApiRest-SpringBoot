@@ -1,14 +1,13 @@
 package com.Prueba.ApiRest.servicesImp;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.Prueba.ApiRest.models.Usuario;
 import com.Prueba.ApiRest.repositories.IUsuarioRepository;
 import com.Prueba.ApiRest.services.IUsuarioService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService implements IUsuarioService {
@@ -45,7 +44,7 @@ public class UsuarioService implements IUsuarioService {
 		// TODO Auto-generated method stub
 		int idUser = usuario.getId();
 		Optional<Usuario> user = usuarioRepository.findById(idUser);
-		if( user.isEmpty() ) {
+		if( !user.isPresent() ) {
 			return usuarioRepository.save(usuario);
 		}else {
 			map(usuario, user.get());
