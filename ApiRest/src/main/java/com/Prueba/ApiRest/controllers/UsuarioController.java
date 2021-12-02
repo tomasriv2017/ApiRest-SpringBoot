@@ -6,6 +6,7 @@ import com.Prueba.ApiRest.servicesImp.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class UsuarioController {
 	
 	@Autowired
 	private UsuarioService usuarioService;
-	
+
 	@PutMapping("/actualizar/{id}")
 	public ResponseEntity<?> actualizarUsuario(@RequestBody Usuario usuarioModificado, 
 			@PathVariable(name = "id") int id){
@@ -28,7 +29,8 @@ public class UsuarioController {
 			return new ResponseEntity<Usuario>(usuarioService.saveOrUpdate(usuarioModificado), HttpStatus.OK);
 		}
 	}
-	
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')") //solo los usuarios con el rol admin pueden eliminar a otros usuarios
 	@DeleteMapping("/eliminar/{id}")
 	public ResponseEntity<?> eliminarUsuario(@PathVariable("id")int id) throws Exception{
 		Optional<Usuario> usuarioBuscado = usuarioService.findById(id);

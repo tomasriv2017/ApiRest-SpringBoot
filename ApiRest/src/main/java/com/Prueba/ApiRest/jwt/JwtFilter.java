@@ -33,7 +33,7 @@ public class JwtFilter extends OncePerRequestFilter {
 			if(token != null && jwtProvider.validateToken(token)){ //valido el token
 				String username = jwtProvider.getUsernameFromToken(token); //obtengo el username mediante el token
 				UserDetails userDetails = userDetailsServiceImp.loadUserByUsername(username); //obtengo el usuario mediante el username
-				UsernamePasswordAuthenticationToken auth = 
+				UsernamePasswordAuthenticationToken auth =
 						new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities()); //autenticamos al usuario
 				SecurityContextHolder.getContext().setAuthentication(auth); //se lo pasamos al contexto de autenticacion para que tenga en cuenta los "privilegios" de este usuario
 			}
@@ -48,7 +48,7 @@ public class JwtFilter extends OncePerRequestFilter {
 		String header = req.getHeader("Authorization"); //obtengo el token que se encuentra en la cabecera 
 		System.out.println("Header --> "+header);
 		if(header != null && header.startsWith("Bearer")) { //si la cabecera no esta vacia y empieza con Bearer ("un estandar de JWT para los tokens")
-			header = header.replace("Bearer", ""); //retiro "Bearer" y me quedo con todo lo demas
+			header = header.split(" ")[1]; //retiro "Bearer" y me quedo con todo lo demas
 			System.out.println("Header modificado --> "+header);
 		}
 		return header;

@@ -1,12 +1,12 @@
 package com.Prueba.ApiRest.models;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class UsuarioPrincipal implements UserDetails{
 	/**
@@ -82,7 +82,15 @@ public class UsuarioPrincipal implements UserDetails{
 		this.password = password;
 		this.authorities = authorities;
 	}
-	
-	
-	
+
+	@Override
+	public String toString() {
+		return "UsuarioPrincipal{" +
+				"id=" + id +
+				", email='" + email + '\'' +
+				", username='" + username + '\'' +
+				", password='" + password + '\'' +
+				", authorities=" + authorities +
+				'}';
+	}
 }

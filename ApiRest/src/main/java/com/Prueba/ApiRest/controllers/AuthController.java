@@ -18,6 +18,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,9 +58,9 @@ public class AuthController {
 			Usuario usuario = new Usuario(nuevoUsuario.getDni(), nuevoUsuario.getApellido(), 
 					nuevoUsuario.getNombre(), nuevoUsuario.getEmail(), nuevoUsuario.getUsername(), passwordEncoder.encode(nuevoUsuario.getPassword()) );
 			Set<Rol> roles = new HashSet<>();
-		    roles.add(rolService.findByTipo(Roles.TIPO_USER).get());//por defecto se le agregar el rol user
-			if(nuevoUsuario.getRoles().contains(Roles.TIPO_ADMIN.toString()) ) {
-				roles.add( rolService.findByTipo(Roles.TIPO_ADMIN).get());
+		    roles.add(rolService.findByTipo(Roles.ROLE_USER).get());//por defecto se le agregar el rol user
+			if(nuevoUsuario.getRoles().contains(Roles.ROLE_ADMIN.toString()) ) {
+				roles.add( rolService.findByTipo(Roles.ROLE_ADMIN).get());
 			}
 			usuario.setRoles(roles);
 			return new ResponseEntity<Usuario>(usuarioService.saveOrUpdate(usuario), HttpStatus.CREATED);	
@@ -75,16 +76,15 @@ public class AuthController {
 			return new ResponseEntity<Mensaje>(new Mensaje("Campos invalidos"), HttpStatus.BAD_REQUEST);
 		}
 		if(usuarioService.findByUsername(loginUsuario.getUsername()).isPresent() ) {
-			//UsuarioPrincipal usuarioPrincial =( (UsuarioPrincipal)auth.getPrincipal()); //obtengo al usuario que se va a loguear
 			try{
 				Authentication auth =
 						authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUsuario.getUsername(),
 								loginUsuario.getPassword())); //autenticamos al user que se va a
 				SecurityContextHolder.getContext().setAuthentication(auth); //se lo pasamos al contexto de autenticacion para que tenga en cuenta los "privilegios" de este usuario
-
 				String token  = jwtProvider.generateToken(auth);//genero el token
-				JwtDto jwtDto =
-						new JwtDto(token, Integer.parseInt( jwtProvider.getIdFromToken(token))  ,jwtProvider.getUsernameFromToken(token), auth.getAuthorities());
+				UserDetails userDetails = (UserDetails)auth.getPrincipal(); //obtengo al usuario que se va a loguear
+				JwtDto jwtDto = new JwtDto( token, Integer.parseInt( jwtProvider.getIdFromToken(token)),
+										jwtProvider.getUsernameFromToken(token), userDetails.getAuthorities() );
 				return new ResponseEntity<JwtDto>(jwtDto, HttpStatus.OK);
 			}catch (BadCredentialsException badCredentialsException) {
 				return new ResponseEntity<Mensaje>(new Mensaje("Contraseña incorrecta"), HttpStatus.NOT_ACCEPTABLE);
